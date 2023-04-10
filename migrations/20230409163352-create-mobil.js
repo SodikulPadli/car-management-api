@@ -9,23 +9,35 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      nama_mobil: {
         type: Sequelize.STRING
       },
-      description: {
-        type: Sequelize.STRING
-      },
-      tipe: {
-        type: Sequelize.STRING
-      },
-      foto: {
-        type: Sequelize.STRING
-      },
-      manufactur: {
+      ukuran: {
         type: Sequelize.STRING
       },
       harga_sewa: {
         type: Sequelize.INTEGER
+      },
+      foto: {
+        type: Sequelize.STRING
+      },
+      tahun: {
+        type: Sequelize.INTEGER
+      },
+      IdUser: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
+      },
+      updateBy: {
+        type: Sequelize.STRING
+      },
+      deleteBy: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

@@ -14,12 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Mobil.init({
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    tipe: DataTypes.STRING,
+    nama_mobil: DataTypes.STRING,
+    ukuran: DataTypes.STRING,
+    harga_sewa: DataTypes.INTEGER,
     foto: DataTypes.STRING,
-    manufactur: DataTypes.STRING,
-    harga_sewa: DataTypes.INTEGER
+    tahun: DataTypes.INTEGER,
+    IdUser: DataTypes.INTEGER,
+    updateBy: DataTypes.STRING,
+    deleteBy: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Mobil',

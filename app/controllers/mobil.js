@@ -1,5 +1,5 @@
 // import models
-const { Mobil} = require('../../models');
+const { Mobil,User} = require('../../models');
 const Joi = require('joi');
 // cloudinary
 const cloudinary = require('../utils/Cloundinary');
@@ -15,16 +15,14 @@ exports.addMobil = async (req, res) => {
     unique_filename: false,
   });
 
-  // id from user
-  const { id } = req.user;
 
   // joi validate input
   const schema = Joi.object({
-    name: Joi.string().required(),
-    description: Joi.string().required(),
-    tipe: Joi.string().required(),
-    manufactur: Joi.string().required(),
-    harga_sewa:Joi.number().required()
+    nama_mobil: Joi.string().required(),
+    ukuran: Joi.string().required(),
+    harga_sewa: Joi.number().required(),
+    tahun: Joi.number().required(),
+    IdUser: Joi.number().required(),
   });
 
   const { error } = schema.validate(data);
@@ -38,31 +36,44 @@ exports.addMobil = async (req, res) => {
 
   try {
     // create mobil
-    const newMobil = await Mobil.create({
-      ...data,
-      foto: result.public_id,
-    });
-
-    let mobilData = await Mobil.findOne({
+    const checkRole = await User.findOne({
       where: {
-        id: newMobil.id,
-      },
-      attributes: {
-        exclude: ['createdAt', 'updatedAt'],
-      },
+        id: req.body.IdUser,
+      }
     });
-
-    mobilData = JSON.parse(JSON.stringify(mobilData));
-
-    mobilData = {
-      ...mobilData,
-      foto: process.env.PATH_FILE + mobilData.foto,
-    };
-    res.status(200).send({
-      status: 'Success',
-      message: 'mobil created successfully',
-      data: mobilData,
-    });
+    if (checkRole.role !="member") {
+        const newMobil = await Mobil.create({
+        ...data,
+        foto: result.public_id,
+      });
+          let mobilData = await Mobil.findOne({
+            where: {
+              id: newMobil.id,
+            },
+            attributes: {
+              exclude: ['createdAt', 'updatedAt'],
+            },
+          });
+      
+          mobilData = JSON.parse(JSON.stringify(mobilData));
+      
+          mobilData = {
+            ...mobilData,
+            foto: process.env.PATH_FILE + mobilData.foto,
+          };
+          res.status(200).send({
+            status: 'Success',
+            message: 'mobil created successfully',
+            data: mobilData,
+          });
+    } else {
+      
+      res.status(400).send({
+            status: 'Failed',
+            message: 'Hanya Admin dan Superadmin yang dapat menambah data',
+           
+          });    
+    }
   } catch (error) {
     res.status(400).send({
       status: 'Error',
@@ -151,11 +162,12 @@ exports.updateMobil = async (req, res) => {
   // data
 //   const data1 = req.body;
   const data = {
-    name: req.body.name,
-    description: req.body.description,
-    tipe: req.body.tipe,
-    manufactur: req.body.manufactur,
+     nama_mobil:req.body.nama_mobil,
+    ukuran:req.body.ukuran,
     harga_sewa: req.body.harga_sewa,
+    tahun:req.body.tahun,
+    IdUser: req.body.IdUser
+    
   };
 
   try {
@@ -175,6 +187,7 @@ exports.updateMobil = async (req, res) => {
         use_filename: true,
         unique_filename: false,
       });
+
 
       // update product
       await Mobil.update({ ...data, foto: result.public_id },
