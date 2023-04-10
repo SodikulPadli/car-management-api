@@ -268,26 +268,26 @@
     "schemas": {
       "mobil": {
         "required": [
-          "name",
-          "description",
-          "tipe",
+          "nama_mobil",
+          "ukuran",
           "harga_sewa",
           "foto",
-          "manufactur"
+          "tahun",
+          "IdUser"
         ],
         "type": "object",
         "properties": {
-          "name": {
+          "nama_mobil": {
             "type": "string",
             "example": "Avanza"
           },
-          "description": {
+          "ukuran": {
             "type": "string",
-            "example": "Nyaman dan luas"
+            "example": "Small"
           },
-          "tipe": {
-            "type": "string",
-            "example": "Medium"
+          "IdUser": {
+            "type": "number",
+            "example": 1
           },
           "harga_sewa": {
             "type": "number",
@@ -297,7 +297,7 @@
             "type": "string",
             "example": "http://example.com/zx25r.jpg"
           },
-          "manufactur": {
+          "tahun": {
             "type": "string",
             "example": "2010"
           }
