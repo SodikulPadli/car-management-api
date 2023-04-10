@@ -132,7 +132,7 @@ http://localhost:8000/api-docs/
 name: "sodikul padli",
 email: "coolman@gmail.com",
 password:"123456",
-role: "customer",
+role: "superadmin",
 createdAt: "2023-04-08 00:00",
 updatedAt: "2023-04-08 00:00"
 ```
